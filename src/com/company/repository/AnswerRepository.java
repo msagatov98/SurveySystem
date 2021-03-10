@@ -28,8 +28,8 @@ public class AnswerRepository implements AnswerInterface {
         List<Answer> questions = new ArrayList<>();
         while (rs.next()) {
             Answer question = new Answer(
-                    rs.getInt("user_id"),
-                    rs.getInt("question_id"),
+                    rs.getInt("userid"),
+                    rs.getInt("questionid"),
                     rs.getString("answer")
             );
 
@@ -53,7 +53,32 @@ public class AnswerRepository implements AnswerInterface {
 
     @Override
     public boolean createAnswer(Answer answer) {
-        // TODO
+        Connection con = null;
+        try {
+            con = db.getConnection();
+
+            String sql = "INSERT INTO answer(userid, questionid, answer) " +
+                    "VALUES (?,?,?)";
+            PreparedStatement st = con.prepareStatement(sql);
+
+            st.setInt(1, answer.getUserId());
+            st.setInt(2, answer.getQuestionId());
+            st.setString(3, answer.getAnswer());
+
+            return st.execute();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+
         return false;
     }
 }

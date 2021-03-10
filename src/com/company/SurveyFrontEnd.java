@@ -9,6 +9,7 @@ import com.company.database.IDB;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -170,8 +171,8 @@ public class SurveyFrontEnd {
         System.out.println();
     }
 
-    private void vote() {
-        List<Question> list;
+    private void vote() throws IOException {
+        ArrayList<Question> list;
 
         list = controller.getQuestions();
 
@@ -190,20 +191,20 @@ public class SurveyFrontEnd {
                 System.out.println();
                 System.out.print("Select question from 1-" + list.size() + ": ");
 
-                int selectedQuestion = scanner.nextInt();
+                int selectedQuestion = Integer.parseInt(reader.readLine().trim());
+                    Question q = list.get(selectedQuestion-1);
 
-                if (selectedQuestion <= list.size()) {
-                    int questionId = list.get(selectedQuestion).getId();
+                    int questionId = q.getId();
                     Question question = controller.getQuestion(questionId);
                     System.out.println();
 
                     if (question != null) {
                         System.out.println(question.getQuestion());
                         System.out.println("Select option (1-4)");
-                        System.out.println(question.getOption1());
-                        System.out.println(question.getOption1());
-                        System.out.println(question.getOption1());
-                        System.out.println(question.getOption1());
+                        System.out.println("1) " + question.getOption1());
+                        System.out.println("2) " + question.getOption2());
+                        System.out.println("3) " + question.getOption3());
+                        System.out.println("4) " + question.getOption4());
 
                         int option = scanner.nextInt();
 
@@ -226,13 +227,15 @@ public class SurveyFrontEnd {
                                     break;
                             }
 
-                            Answer newAnswer = new Answer(currentUser.getId(), question.getId(), answer);
+                            Answer newAnswer;
 
-                            if (controller.createAnswer(newAnswer)) {
-                                System.out.println("Your answer saved");
+                            if (currentUser == null) {
+                                newAnswer = new Answer(0, question.getId(), answer);
                             } else {
-                                System.out.println("Some error");
+                                newAnswer = new Answer(currentUser.getId(), question.getId(), answer);
                             }
+                            controller.createAnswer(newAnswer);
+                            System.out.println("Your answer saved");
                         } else {
                             System.out.println();
                             System.out.println("Select right option");
@@ -240,9 +243,7 @@ public class SurveyFrontEnd {
                     } else {
                         System.out.println("Some error");
                     }
-                } else {
-                    System.out.println("Select right question");
-                }
+
             }
         }
     }
@@ -282,7 +283,7 @@ public class SurveyFrontEnd {
                 for (Question question : questions) {
                     int count = 0;
                     for (Answer answer : answers) {
-                        if (question.getAnswer().equals(answer.getAnswer()))
+                        if (answer.getQuestionId() == question.getId())
                             count++;
                     }
                     System.out.println("For question \"" + question.getQuestion() + "\" there are " + count + " answers");

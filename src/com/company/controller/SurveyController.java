@@ -6,6 +6,7 @@ import com.company.bean.User;
 import com.company.database.IDB;
 import com.company.repository.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SurveyController {
@@ -44,7 +45,7 @@ public class SurveyController {
         return questionRepository.getQuestion(id);
     }
 
-    public List<Question> getQuestions() {
+    public ArrayList<Question> getQuestions() {
         return questionRepository.getAllQuestions();
     }
 }

@@ -30,6 +30,7 @@ public class QuestionRepository implements QuestionInterface {
 
             if (rs.next()) {
                 Question question = new Question(
+                        rs.getInt("id"),
                         rs.getString("question"),
                         rs.getString("answer"),
                         rs.getString("option1"),
@@ -57,7 +58,7 @@ public class QuestionRepository implements QuestionInterface {
     }
 
     @Override
-    public List<Question> getAllQuestions() {
+    public ArrayList<Question> getAllQuestions() {
         Connection con = null;
         try {
             con = db.getConnection();
@@ -65,9 +66,10 @@ public class QuestionRepository implements QuestionInterface {
             Statement st = con.createStatement();
 
             ResultSet rs = st.executeQuery(sql);
-            List<Question> questions = new ArrayList<>();
+            ArrayList<Question> questions = new ArrayList<>();
             while (rs.next()) {
                 Question question = new Question(
+                        rs.getInt("id"),
                         rs.getString("question"),
                         rs.getString("answer"),
                         rs.getString("option1"),

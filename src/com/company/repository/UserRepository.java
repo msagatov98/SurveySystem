@@ -69,12 +69,9 @@ public class UserRepository implements UserInterface {
             st.setString(1, name);
             st.setString(2, password);
             st.setBoolean(3, false);
+            st.execute();
 
-            boolean isSuccess = st.execute();
-
-            if (isSuccess) {
-                return new User(name, password);
-            }
+            return new User(name, password);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } catch (ClassNotFoundException e) {
