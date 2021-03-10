@@ -12,7 +12,7 @@ public class SurveyDatabase implements IDB {
         try {
             Class.forName("org.postgresql.Driver");
 
-            Connection con = DriverManager.getConnection(connectionUrl, "postgres", "X187pp98");
+            Connection con = DriverManager.getConnection(connectionUrl, "postgres", "123");
 
             return con;
         } catch (Exception e) {
