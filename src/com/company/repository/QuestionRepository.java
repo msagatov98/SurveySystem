@@ -23,15 +23,13 @@ public class QuestionRepository implements QuestionInterface {
         try {
             con = db.getConnection();
 
-            String sql = "SELECT question, option1, option2, option3, option4 FROM questions WHERE id=?";
+            String sql = "SELECT * FROM question WHERE id=" + id;
             PreparedStatement st = con.prepareStatement(sql);
 
-            st.setInt(1, id);
             ResultSet rs = st.executeQuery();
 
             if (rs.next()) {
                 Question question = new Question(
-                        rs.getInt("user_id"),
                         rs.getString("question"),
                         rs.getString("answer"),
                         rs.getString("option1"),
@@ -59,17 +57,17 @@ public class QuestionRepository implements QuestionInterface {
     }
 
     @Override
-    public List<Question> getAllQuestions() {Connection con = null;
+    public List<Question> getAllQuestions() {
+        Connection con = null;
         try {
             con = db.getConnection();
-            String sql = "SELECT id,name,weight,cost, precious FROM stones";
+            String sql = "SELECT * FROM question";
             Statement st = con.createStatement();
 
             ResultSet rs = st.executeQuery(sql);
             List<Question> questions = new ArrayList<>();
             while (rs.next()) {
                 Question question = new Question(
-                        rs.getInt("user_id"),
                         rs.getString("question"),
                         rs.getString("answer"),
                         rs.getString("option1"),
@@ -105,13 +103,12 @@ public class QuestionRepository implements QuestionInterface {
                     "VALUES (?,?,?,?,?,?)";
             PreparedStatement st = con.prepareStatement(sql);
 
-            st.setInt(1, question.getUser_id());
-            st.setString(2, question.getQuestion());
-            st.setString(3, question.getAnswer());
-            st.setString(4, question.getOption1());
-            st.setString(5, question.getOption2());
-            st.setString(6, question.getOption3());
-            st.setString(7, question.getOption4());
+            st.setString(1, question.getQuestion());
+            st.setString(2, question.getAnswer());
+            st.setString(3, question.getOption1());
+            st.setString(4, question.getOption2());
+            st.setString(5, question.getOption3());
+            st.setString(6, question.getOption4());
 
             return st.execute();
         } catch (SQLException throwables) {

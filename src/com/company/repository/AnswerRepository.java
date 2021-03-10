@@ -18,7 +18,36 @@ public class AnswerRepository implements AnswerInterface {
 
     @Override
     public List<Answer> getAllAnswers() {
-        // TODO
+        Connection con = null;
+        try {
+        con = db.getConnection();
+        String sql = "SELECT * FROM answer";
+        Statement st = con.createStatement();
+
+        ResultSet rs = st.executeQuery(sql);
+        List<Answer> questions = new ArrayList<>();
+        while (rs.next()) {
+            Answer question = new Answer(
+                    rs.getInt("user_id"),
+                    rs.getInt("question_id"),
+                    rs.getString("answer")
+            );
+
+            questions.add(question);
+        }
+
+        return questions;
+    } catch (SQLException throwables) {
+        throwables.printStackTrace();
+    } catch (ClassNotFoundException e) {
+        e.printStackTrace();
+    } finally {
+        try {
+            con.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
         return null;
     }
 

@@ -11,8 +11,7 @@ public class Question {
     private String option3;
     private String option4;
 
-    public Question(int user_id, String question, String answer, String option1, String option2, String option3, String option4) {
-        this.user_id = user_id;
+    public Question(String question, String answer, String option1, String option2, String option3, String option4) {
         this.question = question;
         this.answer = answer;
         this.option1 = option1;

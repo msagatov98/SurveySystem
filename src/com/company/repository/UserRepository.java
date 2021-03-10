@@ -75,7 +75,6 @@ public class UserRepository implements UserInterface {
             if (isSuccess) {
                 return new User(name, password);
             }
-
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } catch (ClassNotFoundException e) {
